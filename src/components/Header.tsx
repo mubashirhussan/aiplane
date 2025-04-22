@@ -1,15 +1,14 @@
 'use client';
 
+import Link from "next/link";
+
 export function Header() {
   return (
-    <div className="absolute top-0 left-0 w-full flex justify-between items-center p-6 text-white text-lg z-20">
-      <div className="font-bold text-2xl">Wanderly</div>
-      <div className="flex gap-6">
-        <a href="#about" className="hover:underline">About</a>
-        <a href="#blog" className="hover:underline">Blog</a>
-        <a href="#help" className="hover:underline">Help</a>
-        <a href="#contact" className="hover:underline">Contact</a>
-      </div>
-    </div>
+    <header className="flex justify-end p-4 gap-6">
+      <Link href="/about" className="hover:text-cyan-400">About</Link>
+      <Link href="/blog" className="hover:text-cyan-400">Blog</Link>
+      <Link href="/help" className="hover:text-cyan-400">Help</Link>
+      <Link href="/contact" className="hover:text-cyan-400">Contact</Link>
+    </header>
   );
 }

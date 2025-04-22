@@ -21,7 +21,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="relative flex flex-col w-screen h-screen overflow-hidden bg-black">
+    <div className="relative flex flex-col w-screen h-screen overflow-hidden bg-[#0a0a23]">
       <Header />
 
       <div className="absolute inset-0 z-0">
@@ -36,8 +36,7 @@ export default function Home() {
         <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
           Plan Your Adventure with AI
         </h1>
-
-        <div className="w-full max-w-xs md:max-w-md">
+        <div className="w-full max-w-xs md:max-w-md mt-6">
           <Chatbox />
         </div>
       </div>
