@@ -12,6 +12,7 @@
     "react-globe.gl": "^2.33.2"
   },
   "devDependencies": {
+    "@types/node": "^22.14.1",
     "@types/react": "19.1.2",
     "typescript": "5.8.3"
   }
