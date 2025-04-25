@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -11,14 +11,21 @@ const Globe = dynamic(() => import("react-globe.gl"), { ssr: false });
 
 export default function Home() {
   const globeEl = useRef<any>(null);
+  const [isGlobeReady, setIsGlobeReady] = useState(false);
 
   useEffect(() => {
-    const controls = globeEl.current?.controls();
-    if (controls) {
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = 0.3;
+    if (isGlobeReady && globeEl.current) {
+      const controls = globeEl.current.controls();
+      if (controls) {
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.3;
+      }
     }
-  }, []);
+  }, [isGlobeReady]);
+
+  const onGlobeReady = () => {
+    setIsGlobeReady(true);
+  };
 
   return (
     <div className="relative flex flex-col w-screen h-screen overflow-hidden bg-[#0a0a23]">
@@ -29,6 +36,7 @@ export default function Home() {
           ref={globeEl}
           globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
           backgroundColor="rgba(0,0,0,0)"
+          onGlobeReady={onGlobeReady} // Trigger when the globe is ready
         />
       </div>
 
