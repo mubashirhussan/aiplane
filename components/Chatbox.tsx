@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -9,9 +9,9 @@ export function Chatbox() {
   return (
     <div>
       {!open && (
-        <Button 
+        <Button
           onClick={() => setOpen(true)}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 text-lg rounded-full shadow-lg"
+          className="bg-blue-500 hover:bg-blue-600 text-black px-8 py-4 text-lg rounded-full shadow-lg"
         >
           PLAN MY TRIP
         </Button>
