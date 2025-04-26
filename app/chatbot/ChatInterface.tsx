@@ -151,7 +151,7 @@ export default function ChatInterface() {
           />
           <Button
             onClick={handleSendMessage}
-            className="absolute right-1 top-1/2 py-0 -translate-y-1/2 px-4  h-8"
+            className="absolute right-1 top-1/2 !py-0 -translate-y-1/2 px-4  h-8"
           >
             Send
           </Button>
