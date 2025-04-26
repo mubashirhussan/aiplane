@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link"; // ✅ use Link instead of router.push
 
 export function Chatbox() {
   const [open, setOpen] = useState(false);
@@ -22,10 +23,18 @@ export function Chatbox() {
           <div className="text-lg font-bold mb-4">Hi traveler! ✈️</div>
           <p className="mb-4">What would you like help with?</p>
           <div className="flex flex-col gap-2">
-            <Button variant="outline">Flights</Button>
-            <Button variant="outline">Hotels</Button>
-            <Button variant="outline">Flights + Hotels</Button>
-            <Button variant="outline">Surprise Me!</Button>
+            {["Flights", "Hotels", "Flights + Hotels", "Surprise Me!"].map(
+              (option) => (
+                <Link
+                  key={option}
+                  href={`/chatbot?option=${encodeURIComponent(option)}`} // ✅ safe URL
+                >
+                  <Button variant="outline" className="w-full">
+                    {option}
+                  </Button>
+                </Link>
+              )
+            )}
           </div>
           <Button
             variant="ghost"
