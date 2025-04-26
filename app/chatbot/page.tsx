@@ -136,12 +136,12 @@ export default function ChatInterface() {
 
       {/* Input */}
       <div className="p-4 border-t">
-        <div className="flex items-center gap-2">
+        <div className="relative ">
           <input
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Type a message..."
-            className="flex-1 h-10 px-3 text-black py-2 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
+            className="w-full h-10 px-3 py-5 text-black pr-20 text-sm border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200"
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
@@ -149,7 +149,10 @@ export default function ChatInterface() {
               }
             }}
           />
-          <Button onClick={handleSendMessage} className="px-4 py-2">
+          <Button
+            onClick={handleSendMessage}
+            className="absolute right-1 top-1/2 -translate-y-1/2 px-4 py-1 h-8"
+          >
             Send
           </Button>
         </div>
