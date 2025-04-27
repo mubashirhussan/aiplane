@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { SmilePlus } from "lucide-react";
+import { Loader2, SmilePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
+import { BeatLoader, DotLoader } from "react-spinners";
 // import { useMobile } from "@/hooks/use-mobile"
 
 type Message = {
@@ -17,25 +18,7 @@ type Message = {
 export default function ChatInterface() {
   const searchParams = useSearchParams();
   const option = searchParams.get("option"); // get query param 'option'
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      content:
-        "I want to travel in August to a beach destination with a budget of $700.",
-      sender: "user",
-      timestamp: new Date(),
-    },
-    {
-      id: "2",
-      content: `Based on your $700 budget and travel window in August, here are 3 beach destinations:
-
-1. Algarve, Portugal - Flights + Hotel: $650
-2. Santorini, Greece - Flights + B&B: $695
-3. Split, Croatia - Flights + Hostel: $620`,
-      sender: "bot",
-      timestamp: new Date(),
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -49,10 +32,9 @@ export default function ChatInterface() {
     scrollToBottom();
   }, [messages]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (inputValue.trim() === "") return;
 
-    // Add user message
     const newUserMessage: Message = {
       id: Date.now().toString(),
       content: inputValue,
@@ -63,17 +45,38 @@ export default function ChatInterface() {
     setMessages((prev) => [...prev, newUserMessage]);
     setInputValue("");
 
-    // Simulate bot response (in a real app, this would be an API call)
-    setTimeout(() => {
-      const botResponse: Message = {
-        id: (Date.now() + 1).toString(),
-        content:
-          "I'm processing your request. I'll get back to you shortly with some options!",
+    try {
+      // Show loading bubble
+      const loadingMessage: Message = {
+        id: "loading",
+        content: "",
         sender: "bot",
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, botResponse]);
-    }, 1000);
+      setMessages((prev) => [...prev, loadingMessage]);
+
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: inputValue }),
+      });
+
+      const data = await response.json();
+
+      // Replace loading message with actual response
+      setMessages((prev) =>
+        prev
+          .filter((msg) => msg.id !== "loading")
+          .concat({
+            id: Date.now().toString(),
+            content: data.reply,
+            sender: "bot",
+            timestamp: new Date(),
+          })
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const formatTimestamp = (date: Date) => {
@@ -105,7 +108,7 @@ export default function ChatInterface() {
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4">
         <div className="space-y-4">
-          {messages.map((message) => (
+          {messages?.map((message) => (
             <div
               key={message.id}
               className={cn(
@@ -122,7 +125,11 @@ export default function ChatInterface() {
                       : "bg-white border text-gray-900"
                   )}
                 >
-                  <p className="whitespace-pre-wrap">{message.content}</p>
+                  {message.id === "loading" ? (
+                    <BeatLoader size={8} color="#000" />
+                  ) : (
+                    <p className="whitespace-pre-wrap">{message.content}</p>
+                  )}
                 </div>
                 <span className="text-xs text-gray-500 mt-1 self-end">
                   {formatTimestamp(message.timestamp)}
